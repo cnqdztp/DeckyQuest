@@ -1,0 +1,695 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StreamDeckSharp</name>
+    </assembly>
+    <members>
+        <member name="T:StreamDeckSharp.Exceptions.StreamDeckException">
+            <summary>
+            Base class for all StreamDeckSharp Exceptions
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Exceptions.StreamDeckException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Exceptions.StreamDeckException"/> class.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Exceptions.StreamDeckException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Exceptions.StreamDeckException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:StreamDeckSharp.Exceptions.StreamDeckException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Exceptions.StreamDeckException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">
+            The exception that is the cause of the current exception, or a null reference
+            if no inner exception is specified.
+            </param>
+        </member>
+        <member name="M:StreamDeckSharp.Exceptions.StreamDeckException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Exceptions.StreamDeckException"/> class.
+            </summary>
+            <param name="info">
+            The System.Runtime.Serialization.SerializationInfo that holds the serialized
+            object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The System.Runtime.Serialization.StreamingContext that contains contextual information
+            about the source or destination.
+            </param>
+        </member>
+        <member name="T:StreamDeckSharp.Exceptions.StreamDeckNotFoundException">
+            <summary>
+            Is thrown if no device could be found
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Exceptions.StreamDeckNotFoundException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Exceptions.StreamDeckNotFoundException"/> class.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Exceptions.StreamDeckNotFoundException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Exceptions.StreamDeckNotFoundException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:StreamDeckSharp.Exceptions.StreamDeckNotFoundException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Exceptions.StreamDeckNotFoundException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">
+            The exception that is the cause of the current exception, or a null reference
+            if no inner exception is specified.
+            </param>
+        </member>
+        <member name="M:StreamDeckSharp.Exceptions.StreamDeckNotFoundException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Exceptions.StreamDeckNotFoundException"/> class.
+            </summary>
+            <param name="info">
+            The System.Runtime.Serialization.SerializationInfo that holds the serialized
+            object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The System.Runtime.Serialization.StreamingContext that contains contextual information
+            about the source or destination.
+            </param>
+        </member>
+        <member name="T:StreamDeckSharp.Hardware">
+            <summary>
+            Details about different StreamDeck Hardware
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Hardware.StreamDeck">
+            <summary>
+            Details about the classic Stream Deck
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Hardware.StreamDeckMK2">
+            <summary>
+            Details about the updated Stream Deck MK.2
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Hardware.StreamDeckRev2">
+            <summary>
+            Details about the classic Stream Deck Rev 2
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Hardware.StreamDeckXL">
+            <summary>
+            Details about the Stream Deck XL
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Hardware.StreamDeckXlRev2">
+            <summary>
+            Details about the Stream Deck XL Rev2
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Hardware.StreamDeckMini">
+            <summary>
+            Details about the Stream Deck Mini
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Hardware.SteamDeckMiniRev2">
+            <summary>
+            Details about the Stream Deck Mini Rev2
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Hardware.RegisterNewHardware(StreamDeckSharp.UsbVendorProductPair,System.String,OpenMacroBoard.SDK.GridKeyLayout,StreamDeckSharp.Internals.IStreamDeckHidComDriver)">
+            <summary>
+            This method registers a new (currently unknown to this library) hardware driver.
+            </summary>
+            <remarks>
+            <para>
+            This method can be used if a new stream deck hardware is released to the market and
+            the library currently doesn't have support for that new device. In the past a new device
+            was often pretty similar to an existing device so with this method a tech-savvy person
+            can register that new device.
+            </para>
+            <para>
+            This feature is a bit "low-level", just take a look at the source code
+            if you are not sure what to do.
+            </para>
+            </remarks>
+            <param name="usbId">The USB vendor and product ID.</param>
+            <param name="deviceName">A human readable name of the device.</param>
+            <param name="keyLayout">The key layout of the device.</param>
+            <param name="driver">The code that is used to communicate to the device.</param>
+            <returns>
+            Returns a description of the device that can be used to open that device with
+            <see cref="M:StreamDeckSharp.StreamDeck.OpenDevice(StreamDeckSharp.IUsbHidHardware[])"/> or
+            <see cref="M:StreamDeckSharp.StreamDeck.EnumerateDevices(StreamDeckSharp.IUsbHidHardware[])"/>.
+            </returns>
+        </member>
+        <member name="T:StreamDeckSharp.IHardware">
+            <summary>
+            A compact collection of hardware specific information about a device.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.IHardware.Keys">
+            <summary>
+            Key layout information
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.IHardware.DeviceName">
+            <summary>
+            Name of the device
+            </summary>
+        </member>
+        <member name="T:StreamDeckSharp.Internals.HidComDriverStreamDeck">
+            <summary>
+            HID Stream Deck communication driver for the classical Stream Deck.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.HeaderSize">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.ReportSize">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.ExpectedFeatureReportLength">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.ExpectedOutputReportLength">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.ExpectedInputReportLength">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.KeyReportOffset">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.FirmwareVersionFeatureId">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.SerialNumberFeatureId">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.FirmwareVersionReportSkip">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.SerialNumberReportSkip">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeck.BytesPerSecondLimit">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeck.GeneratePayload(OpenMacroBoard.SDK.KeyBitmap)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeck.ExtKeyIdToHardwareKeyId(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeck.HardwareKeyIdToExtKeyId(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeck.PrepareDataForTransmission(System.Byte[],System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeck.GetBrightnessMessage(System.Byte)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeck.GetLogoMessage">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeck.FlipIdsHorizontal(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="T:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg">
+            <summary>
+            HID Stream Deck communication driver for JPEG based devices.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg"/> class.
+            </summary>
+            <param name="imgSize">The size of the button images in pixels.</param>
+            /// <exception cref="T:System.ArgumentOutOfRangeException">Thrown if the <paramref name="imgSize"/> is smaller than one.</exception>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.HeaderSize">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.ReportSize">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.ExpectedFeatureReportLength">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.ExpectedOutputReportLength">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.ExpectedInputReportLength">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.KeyReportOffset">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.FirmwareVersionFeatureId">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.SerialNumberFeatureId">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.FirmwareVersionReportSkip">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.SerialNumberReportSkip">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.BytesPerSecondLimit">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.ExtKeyIdToHardwareKeyId(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.GeneratePayload(OpenMacroBoard.SDK.KeyBitmap)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.HardwareKeyIdToExtKeyId(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.PrepareDataForTransmission(System.Byte[],System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.GetBrightnessMessage(System.Byte)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckJpeg.GetLogoMessage">
+            <inheritdoc/>
+        </member>
+        <member name="T:StreamDeckSharp.Internals.HidComDriverStreamDeckMini">
+            <summary>
+            HID Stream Deck communication driver for the Stream Deck Mini.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.Internals.HidComDriverStreamDeckMini"/> class.
+            </summary>
+            <param name="imgSize">The size of the button images in pixels.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown if the <paramref name="imgSize"/> is smaller than one.</exception>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.HeaderSize">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.ReportSize">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.ExpectedFeatureReportLength">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.ExpectedOutputReportLength">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.ExpectedInputReportLength">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.KeyReportOffset">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.FirmwareVersionFeatureId">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.SerialNumberFeatureId">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.FirmwareVersionReportSkip">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.SerialNumberReportSkip">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.BytesPerSecondLimit">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.GeneratePayload(OpenMacroBoard.SDK.KeyBitmap)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.ExtKeyIdToHardwareKeyId(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.HardwareKeyIdToExtKeyId(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.PrepareDataForTransmission(System.Byte[],System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.GetBrightnessMessage(System.Byte)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.HidComDriverStreamDeckMini.GetLogoMessage">
+            <inheritdoc/>
+        </member>
+        <member name="T:StreamDeckSharp.Internals.IStreamDeckHidComDriver">
+            <summary>
+            Interface that describes the StreamDeck HID communication.
+            </summary>
+            <remarks>
+            <para>
+            Unless there are new stream deck versions you likely don't have to deal with this interface
+            or implementations of it directly as a consumer of the library. Because this interface is
+            low level, some members may not have a good documentation or any at all.
+            </para>
+            <para>Implementations must be thread-safe.</para>
+            </remarks>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.HeaderSize">
+            <summary>
+            Gets the header size.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.ReportSize">
+            <summary>
+            Gets the report size.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.ExpectedFeatureReportLength">
+            <summary>
+            Gets the feature report length for the device.
+            </summary>
+            <remarks>
+            <para>This is asserted (in debug mode).</para>
+            </remarks>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.ExpectedOutputReportLength">
+            <summary>
+            Gets the output report length for the device.
+            </summary>
+            <remarks>
+            <para>This is asserted (in debug mode).</para>
+            </remarks>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.ExpectedInputReportLength">
+            <summary>
+            Gets the input report length for the device.
+            </summary>
+            <remarks>
+            <para>This is asserted (in debug mode).</para>
+            </remarks>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.KeyReportOffset">
+            <summary>
+            Gets the offset of the key information inside the key state report.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.FirmwareVersionFeatureId">
+            <summary>
+            The ID of the feature that identifies the firmware version.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.FirmwareVersionReportSkip">
+            <summary>
+            Number of bytes to skip before the firmware version string starts.
+            </summary>
+            <remarks>
+            <para>For details see property documentation of <see cref="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.SerialNumberReportSkip"/>.</para>
+            </remarks>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.SerialNumberFeatureId">
+            <summary>
+            The ID of the feature that identifies the serial number.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.SerialNumberReportSkip">
+            <summary>
+            Number of bytes to skip before the serial number string starts.
+            </summary>
+            <remarks>
+            <para>For some reason some string reports have some "weird" data prefixed.
+            I guess they are some binary encoded details or headers - no idea.
+            This property can be tweaked so the resulting string doesn't contain
+            strange Unicode characters.</para>
+            </remarks>
+        </member>
+        <member name="P:StreamDeckSharp.Internals.IStreamDeckHidComDriver.BytesPerSecondLimit">
+            <summary>
+            Limits the USB transfer speed.
+            </summary>
+            <remarks>
+            <para>Some stream decks produce artifacts and glitches when data comes in to fast.
+            I'm not sure if this happens because of this library or because of a bug in
+            the stream deck's firmware but currently the work-around is to limit the transfer rate.
+            This value has to be determined experimentally.</para>
+            </remarks>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.IStreamDeckHidComDriver.GeneratePayload(OpenMacroBoard.SDK.KeyBitmap)">
+            <summary>
+            Generate they payload for a given <paramref name="keyBitmap"/>.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.IStreamDeckHidComDriver.ExtKeyIdToHardwareKeyId(System.Int32)">
+            <summary>
+            This is used to convert between keyId conventions
+            </summary>
+            <remarks>
+            <para>The original stream deck has a pretty weird way of enumerating keys.
+            Index 0 starts right top and they are enumerated right to left,
+            and top to bottom. Most developers would expect it to be left-to-right
+            instead of right-to-left, so we change that ;-)</para>
+            </remarks>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.IStreamDeckHidComDriver.HardwareKeyIdToExtKeyId(System.Int32)">
+            <summary>
+            This is used to convert between keyId conventions
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.IStreamDeckHidComDriver.PrepareDataForTransmission(System.Byte[],System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Before the report is sent to the stream deck (human interface device) this is called to
+            prepare meta information and details in the report header. This depends on the target device
+            and has to be reverse engineered with a USB traffic analyzer.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.IStreamDeckHidComDriver.GetBrightnessMessage(System.Byte)">
+            <summary>
+            Generates a message to set a given brightness.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.Internals.IStreamDeckHidComDriver.GetLogoMessage">
+            <summary>
+            Generates a message to show the vendor logo.
+            </summary>
+        </member>
+        <member name="F:StreamDeckSharp.Internals.StreamDeckHidWrapper.throttle">
+            <summary>
+            Used to throttle write speed.
+            </summary>
+            <remarks>
+            <para>
+            Based on a hand full of speed measurements, it looks like that (at least)
+            the classical stream deck (hardware revision 1) can't keep up with full USB 2.0 speed.
+            </para>
+            <para>
+            For the other devices this limit is also active but probably not relevant,
+            because in practice the speed is slower, because all other devices use
+            JPEG instead of BMP and the Hid.Write probably also blocks as long as the device is busy.
+            </para>
+            <para>
+            The limit was determined by the following measurements with a classical stream deck:</para>
+            <para>
+            write speed -> time between glitches<br/>
+            3.90 MiB/s -> 1.7s<br/>
+            3.68 MiB/s -> 3.7s<br/>
+            3.60 MiB/s -> 7.6s<br/>
+            </para>
+            <para>
+            Based on the assumption, that the stream deck has a maximum speed at which data is processed,
+            the following formular can be used:
+            </para>
+            <para>
+            Measured speed ............ s<br/>
+            Time between glitches ..... t<br/>
+            Internal speed ............ x (to be calculated)<br/>
+            Hardware buffer size ...... b (will be eliminated when solving for x)<br/>
+            </para>
+            <para>(s - x) * t = b</para>
+            <para>(s1 - x) * t1 = (s2 - x) * t2</para>
+            <para>
+            When solved for x and evaluated with all the measured pairs, the calculated internal speed
+            of the classical stream deck seems to be (almost exactly?) 3.50 MiB/s - A few tests indeed
+            showed that limiting the speed below that value seems to prevent glitches.
+            </para>
+            <para>
+            So long story short we set a limit of 3'200'000 bytes/s (~3.0 MiB/s)
+            for all devices that can't keep up or I haven't had the chance to test on a
+            particular Elgato Device (for example I don't own a StreamDeck Rev2) and for
+            other devices that work as expected we set <see cref="F:System.Double.PositiveInfinity"/> (unlimited).
+            </para>
+            </remarks>
+        </member>
+        <member name="T:StreamDeckSharp.IUsbHidHardware">
+            <summary>
+            USB HID specific hardware information
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.IUsbHidHardware.UsbId">
+            <summary>
+            Unique identifier for USB device. Vendor and product ID pair.
+            </summary>
+        </member>
+        <member name="T:StreamDeckSharp.StreamDeck">
+            <summary>
+            This is a factory class to create IStreamDeck References
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeck.OpenDevice(StreamDeckSharp.IUsbHidHardware[])">
+            <summary>
+            Enumerates connected Stream Decks and returns the first one.
+            </summary>
+            <exception cref="T:StreamDeckSharp.Exceptions.StreamDeckNotFoundException">Thrown if no Stream Deck is found</exception>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeck.OpenDevice(System.Boolean,StreamDeckSharp.IUsbHidHardware[])">
+            <summary>
+            Enumerates connected Stream Decks and returns the first one.
+            </summary>
+            <exception cref="T:StreamDeckSharp.Exceptions.StreamDeckNotFoundException">Thrown if no Stream Deck is found</exception>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeck.OpenDevice(System.String)">
+            <summary>
+            Enumerates connected Stream Decks and returns the first one.
+            </summary>
+            <exception cref="T:StreamDeckSharp.Exceptions.StreamDeckNotFoundException">Thrown if no Stream Deck is found</exception>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeck.OpenDevice(System.String,System.Boolean)">
+            <summary>
+            Get the Stream Deck with a given <paramref name="devicePath"/>.
+            </summary>
+            <exception cref="T:StreamDeckSharp.Exceptions.StreamDeckNotFoundException">Thrown if no Stream Deck is found</exception>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeck.EnumerateDevices(StreamDeckSharp.IUsbHidHardware[])">
+            <summary>
+            Enumerate Elgato Stream Deck Devices that match a given type.
+            </summary>
+            <param name="hardware">If no types or null is passed as argument, all known types are found</param>
+        </member>
+        <member name="T:StreamDeckSharp.StreamDeckDeviceReference">
+            <summary>
+            A device reference pointing to a stream deck.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.StreamDeckDeviceReference.DevicePath">
+            <summary>
+            Gets the OSes unique identifier for human interface device.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.StreamDeckDeviceReference.DeviceName">
+            <inheritdoc/>
+        </member>
+        <member name="P:StreamDeckSharp.StreamDeckDeviceReference.Keys">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeckDeviceReference.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeckDeviceReference.Open(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeckDeviceReference.Open">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeckDeviceReference.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeckDeviceReference.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="T:StreamDeckSharp.StreamDeckListener">
+            <summary>
+            A listener for stream deck devices.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeckListener.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.StreamDeckListener"/> class.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeckListener.Subscribe(System.IObserver{OpenMacroBoard.SDK.DeviceStateReport})">
+            <inheritdoc />
+        </member>
+        <member name="M:StreamDeckSharp.StreamDeckListener.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="F:StreamDeckSharp.StreamDeckListener.Subscription.subscriberState">
+            <summary>
+            Contains the state the subscriber knows about.
+            This is used to calculate new updates.
+            </summary>
+        </member>
+        <member name="T:StreamDeckSharp.UsbConstants">
+            <summary>
+            A collection of Stream Deck USB related constants.
+            </summary>
+        </member>
+        <member name="T:StreamDeckSharp.UsbConstants.VendorIds">
+            <summary>
+            Known (Stream Deck related) USB Vendor IDs.
+            </summary>
+        </member>
+        <member name="F:StreamDeckSharp.UsbConstants.VendorIds.ElgatoSystemsGmbH">
+            <summary>
+            The USB Vendor ID for Elgato Systems GmbH.
+            </summary>
+        </member>
+        <member name="T:StreamDeckSharp.UsbConstants.ProductIds">
+            <summary>
+            Known (Stream Deck related) USB Product IDs.
+            </summary>
+        </member>
+        <member name="T:StreamDeckSharp.UsbVendorProductPair">
+            <summary>
+            Fully quallified USB product identifier. Includes the USB Vendor ID and the USB Product ID.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.UsbVendorProductPair.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:StreamDeckSharp.UsbVendorProductPair"/> struct.
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.UsbVendorProductPair.UsbVendorId">
+            <summary>
+            USB vendor id
+            </summary>
+        </member>
+        <member name="P:StreamDeckSharp.UsbVendorProductPair.UsbProductId">
+            <summary>
+            USB product id
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.UsbVendorProductPair.op_Equality(StreamDeckSharp.UsbVendorProductPair,StreamDeckSharp.UsbVendorProductPair)">
+            <summary>
+            The == operator. Calls <see cref="M:StreamDeckSharp.UsbVendorProductPair.Equals(StreamDeckSharp.UsbVendorProductPair,StreamDeckSharp.UsbVendorProductPair)"/> internally.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.UsbVendorProductPair.op_Inequality(StreamDeckSharp.UsbVendorProductPair,StreamDeckSharp.UsbVendorProductPair)">
+            <summary>
+            The == operator. Calls <see cref="M:StreamDeckSharp.UsbVendorProductPair.Equals(StreamDeckSharp.UsbVendorProductPair,StreamDeckSharp.UsbVendorProductPair)"/> internally
+            and inverts the result.
+            </summary>
+        </member>
+        <member name="M:StreamDeckSharp.UsbVendorProductPair.Equals(StreamDeckSharp.UsbVendorProductPair,StreamDeckSharp.UsbVendorProductPair)">
+            <summary>
+            Indicates whether the two givel objects is equal.
+            </summary>
+            <param name="a">First object.</param>
+            <param name="b">Second object.</param>
+            <returns>true if the two objects are equal; otherwise, false.</returns>
+        </member>
+        <member name="M:StreamDeckSharp.UsbVendorProductPair.Equals(StreamDeckSharp.UsbVendorProductPair)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.UsbVendorProductPair.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:StreamDeckSharp.UsbVendorProductPair.GetHashCode">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

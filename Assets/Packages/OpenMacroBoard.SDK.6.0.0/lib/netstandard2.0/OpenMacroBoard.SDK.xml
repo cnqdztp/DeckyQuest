@@ -1,0 +1,2140 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenMacroBoard.SDK</name>
+    </assembly>
+    <members>
+        <member name="T:OpenMacroBoard.SDK.ButtonPressEffectAdapter">
+            <summary>
+            Macro board adapter that implements a software button press effect.
+            </summary>
+            <remarks>
+            <para>This vaguely mimics the perspective of a real button being pushed
+            and provides better feedback to the user that a button push was registered.</para>
+            </remarks>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ButtonPressEffectAdapter.#ctor(OpenMacroBoard.SDK.IMacroBoard)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.ButtonPressEffectAdapter"/> class.
+            </summary>
+            <param name="macroBoard">The <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> this effect should be applied to.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ButtonPressEffectAdapter.#ctor(OpenMacroBoard.SDK.IMacroBoard,OpenMacroBoard.SDK.ButtonPressEffectConfig)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.ButtonPressEffectAdapter"/> class.
+            </summary>
+            <param name="macroBoard">The board that is wrapped with the button press effect.</param>
+            <param name="config">The configuration that should be used. If null the default configuration will be used.</param>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.ButtonPressEffectAdapter.Config">
+            <summary>
+            The configuration that controls the behavior of the button press effect feature.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ButtonPressEffectAdapter.SetKeyBitmap(System.Int32,OpenMacroBoard.SDK.KeyBitmap)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.ButtonPressEffectConfig">
+            <summary>
+            Configuration for <see cref="T:OpenMacroBoard.SDK.ButtonPressEffectAdapter"/>
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.ButtonPressEffectConfig.Scale">
+            <summary>
+            Gets or sets a factor that determines how much the images gets smaller or even bigger when pressed.
+            </summary>
+            <remarks>
+            <para>It's basically a scale factor, if you want the image to be half the size use 0.5. One means no change
+            and values larger than one make the image bigger when pressed.</para>
+            </remarks>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.ButtonPressEffectConfig.OriginX">
+            <summary>
+            Gets or sets the relative x coordinate of the origin.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.ButtonPressEffectConfig.OriginY">
+            <summary>
+            Gets or sets the relative y coordinate of the origin.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.ButtonPressEffectConfig.BackgroundColor">
+            <summary>
+            The background color that is used when the button is shrunk.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.ConditionalDisposable`1">
+            <summary>
+            A conditional disposable wrapper.
+            </summary>
+            <remarks>
+            <para>This class is used in situations where the wrapped element is either borrowed (in which case
+            it shouldn't be disposed) or owned (in which case it should be disposed) and abstracts that
+            away from the consumer. The consumer has to make sure to call dispose once they are finished
+            and this wrapped decides whether the wrapped element is in fact disposed or not.</para>
+            </remarks>
+            <typeparam name="T">Disposable type.</typeparam>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ConditionalDisposable`1.#ctor(`0,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.ConditionalDisposable`1"/> class.
+            </summary>
+            <param name="item">The wrapped item.</param>
+            <param name="disposeItem">A flag that determines if the item will be disposed.</param>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.ConditionalDisposable`1.Item">
+            <summary>
+            Gets the underlying wrapped item.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.ConditionalDisposable`1.DisposeItem">
+            <summary>
+            Get a value that determines whether the item will be disposed or not.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ConditionalDisposable`1.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:OpenMacroBoard.SDK.ConnectionEventArgs">
+            <summary>
+            Is used for events that communicate connection changes.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ConnectionEventArgs.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.ConnectionEventArgs"/> class.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.ConnectionEventArgs.NewConnectionState">
+            <summary>
+            The new connection state.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.DeviceConnectionChangedEventArgs">
+            <summary>
+            An event argument that reports a connection status change for a particular device.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DeviceConnectionChangedEventArgs.#ctor(OpenMacroBoard.SDK.IDeviceReference,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.DeviceConnectionChangedEventArgs"/> class.
+            </summary>
+            <param name="deviceReference">A device reference.</param>
+            <param name="connected">The current connection state.</param>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.DeviceConnectionChangedEventArgs.DeviceReference">
+            <summary>
+            Gets a handle to the device that changed.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.DeviceConnectionChangedEventArgs.Connected">
+            <summary>
+            Gets a value that indicates the connection state change. True if the device got connected,
+            false if the device got disconnected.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.DeviceContext">
+            <summary>
+            A collection of <see cref="T:OpenMacroBoard.SDK.IDeviceContext"/> released methods.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DeviceContext.Create">
+            <summary>
+            Creates a new device context (without any listeners).
+            </summary>
+            <returns>A new device context.</returns>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.DeviceContextExtensions">
+            <summary>
+            A collection of extensions for <see cref="T:OpenMacroBoard.SDK.IDeviceContext"/>.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DeviceContextExtensions.OpenAsync(OpenMacroBoard.SDK.IDeviceContext,System.Threading.CancellationToken)">
+            <summary>
+            Wait for and open the first detected <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> in this context.
+            </summary>
+            <remarks>
+            <para>
+            If there are multiple devices connected it's undefined which one you will get.
+            If you want to specify a filter to get a specific device use
+            <see cref="M:OpenMacroBoard.SDK.DeviceContextExtensions.OpenAsync(OpenMacroBoard.SDK.IDeviceContext,System.Func{OpenMacroBoard.SDK.IDeviceReference,System.Boolean},System.Threading.CancellationToken)"/>.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DeviceContextExtensions.OpenAsync(OpenMacroBoard.SDK.IDeviceContext,System.Func{OpenMacroBoard.SDK.IDeviceReference,System.Boolean},System.Threading.CancellationToken)">
+            <summary>
+            Wait for and open the first matching <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> in this context.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DeviceContextExtensions.GetDeviceReferenceAsync(OpenMacroBoard.SDK.IDeviceContext,System.Func{OpenMacroBoard.SDK.IDeviceReference,System.Boolean},System.Threading.CancellationToken)">
+            <summary>
+            Wait for and return the first matching <see cref="T:OpenMacroBoard.SDK.IDeviceReference"/>.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.DeviceListenerBase">
+            <summary>
+            A device listener base to simplify device listener implementations.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DeviceListenerBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.DeviceListenerBase"/> class.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.DeviceListenerBase.KnownDevices">
+            <summary>
+            Gets a list of the currently known (at least seen once) devices.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DeviceListenerBase.Subscribe(System.IObserver{OpenMacroBoard.SDK.DeviceStateReport})">
+            <summary>
+            Subscribes an observer that will be notified when a device state changes.
+            </summary>
+            <returns>Returns a disposable subscription.</returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DeviceListenerBase.Update(OpenMacroBoard.SDK.IDeviceReference,System.Boolean)">
+            <summary>
+            Updates a device state. If the state has changed compared to the previous state all subscribed
+            observers will be notified.
+            </summary>
+            <param name="deviceReference">A referenced device which has changed.</param>
+            <param name="connected">The current connection state of the device.</param>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.DeviceListenerBase.Subscription.subscriberState">
+            <summary>
+            Contains the state the subscriber knows about.
+            This is used to calculate new updates.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.DeviceStateReport">
+            <summary>
+            A device state report.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DeviceStateReport.#ctor(OpenMacroBoard.SDK.IDeviceReference,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.DeviceStateReport"/> class.
+            </summary>
+            <param name="deviceReference">The device.</param>
+            <param name="connected">The connection state.</param>
+            <param name="newDevice">Info about if the device is new or not.</param>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.DeviceStateReport.DeviceReference">
+            <summary>
+            Gets the device reference.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.DeviceStateReport.Connected">
+            <summary>
+            Gets the connection state.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.DeviceStateReport.NewDevice">
+            <summary>
+            Gets the info if this device is new or not.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.DisconnectReplayAdapter">
+            <summary>
+            A <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> adapter that replays brightness and key bitmaps if a device is disconnected.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DisconnectReplayAdapter.#ctor(OpenMacroBoard.SDK.IMacroBoard)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.DisconnectReplayAdapter"/> class.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DisconnectReplayAdapter.SetBrightness(System.Byte)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DisconnectReplayAdapter.SetKeyBitmap(System.Int32,OpenMacroBoard.SDK.KeyBitmap)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.DrawFullScreenExtensions">
+            <summary>
+            Extension method to generate fullscreen images on <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/>s.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.DrawFullScreenExtensions.DrawFullScreenBitmap(OpenMacroBoard.SDK.IMacroBoard,SixLabors.ImageSharp.Image,SixLabors.ImageSharp.Processing.ResizeMode)">
+            <summary>
+            Draw a given image as fullscreen (spanning over all keys)
+            </summary>
+            <param name="board">The board the image should be drawn to.</param>
+            <param name="image">The image that should be drawn.</param>
+            <param name="resizeMode">The resize mode that should be used to fit the image.</param>
+            <exception cref="T:System.ArgumentNullException">The provided board or bitmap is null.</exception>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.OmbColor">
+            <summary>
+            Represents a color value.
+            </summary>
+            <content>
+            Contains static named color values.
+            <see href="https://www.w3.org/TR/css-color-3/"/>
+            </content>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbColor.R">
+            <summary>
+            The red part of the color.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbColor.G">
+            <summary>
+            The green part of the color.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbColor.B">
+            <summary>
+            The blue part of the color.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbColor.op_Equality(OpenMacroBoard.SDK.OmbColor,OpenMacroBoard.SDK.OmbColor)">
+            <summary>
+            Checks whether two <see cref="T:OpenMacroBoard.SDK.OmbColor"/> structures are equal.
+            </summary>
+            <param name="left">The left hand <see cref="T:OpenMacroBoard.SDK.OmbColor"/> operand.</param>
+            <param name="right">The right hand <see cref="T:OpenMacroBoard.SDK.OmbColor"/> operand.</param>
+            <returns>
+            True if the <paramref name="left"/> parameter is equal to the <paramref name="right"/> parameter;
+            otherwise, false.
+            </returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbColor.op_Inequality(OpenMacroBoard.SDK.OmbColor,OpenMacroBoard.SDK.OmbColor)">
+            <summary>
+            Checks whether two <see cref="T:OpenMacroBoard.SDK.OmbColor"/> structures are equal.
+            </summary>
+            <param name="left">The left hand <see cref="T:OpenMacroBoard.SDK.OmbColor"/> operand.</param>
+            <param name="right">The right hand <see cref="T:OpenMacroBoard.SDK.OmbColor"/> operand.</param>
+            <returns>
+            True if the <paramref name="left"/> parameter is not equal to the <paramref name="right"/> parameter;
+            otherwise, false.
+            </returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbColor.FromRgb(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Creates a <see cref="T:OpenMacroBoard.SDK.OmbColor"/> from RGB bytes.
+            </summary>
+            <param name="r">The red component (0-255).</param>
+            <param name="g">The green component (0-255).</param>
+            <param name="b">The blue component (0-255).</param>
+            <returns>The <see cref="T:OpenMacroBoard.SDK.OmbColor"/>.</returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbColor.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbColor.Equals(OpenMacroBoard.SDK.OmbColor)">
+            <inheritdoc />
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbColor.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbColor.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.AliceBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F0F8FF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.AntiqueWhite">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FAEBD7.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Aqua">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #00FFFF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Aquamarine">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #7FFFD4.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Azure">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F0FFFF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Beige">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F5F5DC.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Bisque">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFE4C4.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Black">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #000000.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.BlanchedAlmond">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFEBCD.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Blue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #0000FF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.BlueViolet">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #8A2BE2.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Brown">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #A52A2A.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.BurlyWood">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #DEB887.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.CadetBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #5F9EA0.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Chartreuse">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #7FFF00.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Chocolate">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #D2691E.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Coral">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FF7F50.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.CornflowerBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #6495ED.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Cornsilk">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFF8DC.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Crimson">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #DC143C.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Cyan">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #00FFFF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #00008B.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkCyan">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #008B8B.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkGoldenrod">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #B8860B.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkGray">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #A9A9A9.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #006400.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkGrey">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #A9A9A9.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkKhaki">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #BDB76B.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkMagenta">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #8B008B.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkOliveGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #556B2F.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkOrange">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FF8C00.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkOrchid">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #9932CC.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkRed">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #8B0000.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkSalmon">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #E9967A.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkSeaGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #8FBC8F.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkSlateBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #483D8B.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkSlateGray">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #2F4F4F.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkSlateGrey">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #2F4F4F.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkTurquoise">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #00CED1.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DarkViolet">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #9400D3.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DeepPink">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FF1493.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DeepSkyBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #00BFFF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DimGray">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #696969.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DimGrey">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #696969.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.DodgerBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #1E90FF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Firebrick">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #B22222.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.FloralWhite">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFFAF0.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.ForestGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #228B22.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Fuchsia">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FF00FF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Gainsboro">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #DCDCDC.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.GhostWhite">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F8F8FF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Gold">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFD700.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Goldenrod">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #DAA520.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Gray">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #808080.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Green">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #008000.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.GreenYellow">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #ADFF2F.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Grey">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #808080.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Honeydew">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F0FFF0.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.HotPink">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FF69B4.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.IndianRed">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #CD5C5C.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Indigo">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #4B0082.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Ivory">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFFFF0.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Khaki">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F0E68C.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Lavender">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #E6E6FA.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LavenderBlush">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFF0F5.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LawnGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #7CFC00.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LemonChiffon">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFFACD.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #ADD8E6.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightCoral">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F08080.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightCyan">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #E0FFFF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightGoldenrodYellow">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FAFAD2.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightGray">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #D3D3D3.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #90EE90.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightGrey">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #D3D3D3.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightPink">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFB6C1.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightSalmon">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFA07A.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightSeaGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #20B2AA.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightSkyBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #87CEFA.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightSlateGray">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #778899.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightSlateGrey">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #778899.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightSteelBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #B0C4DE.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LightYellow">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFFFE0.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Lime">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #00FF00.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.LimeGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #32CD32.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Linen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FAF0E6.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Magenta">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FF00FF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Maroon">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #800000.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MediumAquamarine">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #66CDAA.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MediumBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #0000CD.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MediumOrchid">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #BA55D3.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MediumPurple">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #9370DB.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MediumSeaGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #3CB371.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MediumSlateBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #7B68EE.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MediumSpringGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #00FA9A.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MediumTurquoise">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #48D1CC.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MediumVioletRed">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #C71585.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MidnightBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #191970.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MintCream">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F5FFFA.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.MistyRose">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFE4E1.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Moccasin">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFE4B5.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.NavajoWhite">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFDEAD.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Navy">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #000080.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.OldLace">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FDF5E6.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Olive">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #808000.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.OliveDrab">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #6B8E23.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Orange">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFA500.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.OrangeRed">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FF4500.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Orchid">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #DA70D6.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.PaleGoldenrod">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #EEE8AA.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.PaleGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #98FB98.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.PaleTurquoise">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #AFEEEE.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.PaleVioletRed">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #DB7093.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.PapayaWhip">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFEFD5.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.PeachPuff">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFDAB9.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Peru">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #CD853F.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Pink">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFC0CB.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Plum">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #DDA0DD.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.PowderBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #B0E0E6.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Purple">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #800080.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.RebeccaPurple">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #663399.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Red">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FF0000.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.RosyBrown">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #BC8F8F.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.RoyalBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #4169E1.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SaddleBrown">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #8B4513.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Salmon">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FA8072.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SandyBrown">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F4A460.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SeaGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #2E8B57.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SeaShell">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFF5EE.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Sienna">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #A0522D.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Silver">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #C0C0C0.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SkyBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #87CEEB.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SlateBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #6A5ACD.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SlateGray">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #708090.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SlateGrey">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #708090.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Snow">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFFAFA.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SpringGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #00FF7F.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.SteelBlue">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #4682B4.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Tan">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #D2B48C.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Teal">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #008080.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Thistle">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #D8BFD8.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Tomato">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FF6347.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Turquoise">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #40E0D0.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Violet">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #EE82EE.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Wheat">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F5DEB3.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.White">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFFFFF.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.WhiteSmoke">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #F5F5F5.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.Yellow">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #FFFF00.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbColor.YellowGreen">
+            <summary>
+            Represents a <see paramref="Color"/> matching the W3C definition that has an hex value of #9ACD32.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.OmbPoint">
+            <summary>
+            Represents an ordered pair of integer x- and y-coordinates that defines a point in
+            a two-dimensional plane.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbPoint.Empty">
+            <summary>
+            Represents a <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> that has X and Y values set to zero.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> struct.
+            </summary>
+            <param name="x">The horizontal position of the point.</param>
+            <param name="y">The vertical position of the point.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.#ctor(OpenMacroBoard.SDK.OmbSize)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> struct from the given <see cref="T:OpenMacroBoard.SDK.OmbSize"/>.
+            </summary>
+            <param name="size">The size.</param>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbPoint.X">
+            <summary>
+            Gets or sets the x-coordinate of this <see cref="T:OpenMacroBoard.SDK.OmbPoint"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbPoint.Y">
+            <summary>
+            Gets or sets the y-coordinate of this <see cref="T:OpenMacroBoard.SDK.OmbPoint"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbPoint.IsEmpty">
+            <summary>
+            Gets a value indicating whether this <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> is empty.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.op_Explicit(OpenMacroBoard.SDK.OmbPoint)~OpenMacroBoard.SDK.OmbSize">
+            <summary>
+            Creates a <see cref="T:OpenMacroBoard.SDK.OmbSize"/> with the coordinates of the specified <see cref="T:OpenMacroBoard.SDK.OmbPoint"/>.
+            </summary>
+            <param name="point">The point.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.op_Division(OpenMacroBoard.SDK.OmbPoint,System.Int32)">
+            <summary>
+            Divides <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> by a <see cref="T:System.Int32"/> producing <see cref="T:OpenMacroBoard.SDK.OmbPoint"/>.
+            </summary>
+            <param name="left">Dividend of type <see cref="T:OpenMacroBoard.SDK.OmbPoint"/>.</param>
+            <param name="right">Divisor of type <see cref="T:System.Int32"/>.</param>
+            <returns>Result of type <see cref="T:OpenMacroBoard.SDK.OmbPoint"/>.</returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.op_Equality(OpenMacroBoard.SDK.OmbPoint,OpenMacroBoard.SDK.OmbPoint)">
+            <summary>
+            Compares two <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> objects for equality.
+            </summary>
+            <param name="left">The <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> on the left side of the operand.</param>
+            <param name="right">The <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> on the right side of the operand.</param>
+            <returns>
+            True if the current left is equal to the <paramref name="right"/> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.op_Inequality(OpenMacroBoard.SDK.OmbPoint,OpenMacroBoard.SDK.OmbPoint)">
+            <summary>
+            Compares two <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> objects for inequality.
+            </summary>
+            <param name="left">The <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> on the left side of the operand.</param>
+            <param name="right">The <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> on the right side of the operand.</param>
+            <returns>
+            True if the current left is unequal to the <paramref name="right"/> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.Deconstruct(System.Int32@,System.Int32@)">
+            <summary>
+            Deconstructs this point into two integers.
+            </summary>
+            <param name="x">The out value for X.</param>
+            <param name="y">The out value for Y.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbPoint.Equals(OpenMacroBoard.SDK.OmbPoint)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.OmbRectangle">
+            <summary>
+            Stores a set of four integers that represent the location and size of a rectangle.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbRectangle.Empty">
+            <summary>
+            Represents a <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> that has X, Y, Width, and Height values set to zero.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> struct.
+            </summary>
+            <param name="x">The horizontal position of the rectangle.</param>
+            <param name="y">The vertical position of the rectangle.</param>
+            <param name="width">The width of the rectangle.</param>
+            <param name="height">The height of the rectangle.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.#ctor(OpenMacroBoard.SDK.OmbPoint,OpenMacroBoard.SDK.OmbSize)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> struct.
+            </summary>
+            <param name="point">
+            The <see cref="T:OpenMacroBoard.SDK.OmbPoint"/> which specifies the rectangles point in a two-dimensional plane.
+            </param>
+            <param name="size">
+            The <see cref="T:OpenMacroBoard.SDK.OmbSize"/> which specifies the rectangles height and width.
+            </param>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.X">
+            <summary>
+            Gets or sets the x-coordinate of this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.Y">
+            <summary>
+            Gets or sets the y-coordinate of this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.Width">
+            <summary>
+            Gets or sets the width of this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.Height">
+            <summary>
+            Gets or sets the height of this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.Location">
+            <summary>
+            Gets or sets the coordinates of the upper-left corner of the rectangular region represented by this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.Size">
+            <summary>
+            Gets or sets the size of this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.IsEmpty">
+            <summary>
+            Gets a value indicating whether this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> is empty.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.Top">
+            <summary>
+            Gets the y-coordinate of the top edge of this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.Right">
+            <summary>
+            Gets the x-coordinate of the right edge of this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.Bottom">
+            <summary>
+            Gets the y-coordinate of the bottom edge of this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbRectangle.Left">
+            <summary>
+            Gets the x-coordinate of the left edge of this <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/>.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.op_Equality(OpenMacroBoard.SDK.OmbRectangle,OpenMacroBoard.SDK.OmbRectangle)">
+            <summary>
+            Compares two <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> objects for equality.
+            </summary>
+            <param name="left">The <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> on the left side of the operand.</param>
+            <param name="right">The <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> on the right side of the operand.</param>
+            <returns>
+            True if the current left is equal to the <paramref name="right"/> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.op_Inequality(OpenMacroBoard.SDK.OmbRectangle,OpenMacroBoard.SDK.OmbRectangle)">
+            <summary>
+            Compares two <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> objects for inequality.
+            </summary>
+            <param name="left">The <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> on the left side of the operand.</param>
+            <param name="right">The <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> on the right side of the operand.</param>
+            <returns>
+            True if the current left is unequal to the <paramref name="right"/> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.FromLTRB(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates a rectangle from left, top, right, bottom.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.Deconstruct(System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Deconstructs this rectangle into four integers.
+            </summary>
+            <param name="x">The out value for X.</param>
+            <param name="y">The out value for Y.</param>
+            <param name="width">The out value for the width.</param>
+            <param name="height">The out value for the height.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.Equals(OpenMacroBoard.SDK.OmbRectangle)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbRectangle.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.OmbSize">
+            <summary>
+            Stores an ordered pair of integers, which specify a height and width.
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.OmbSize.Empty">
+            <summary>
+            Represents a <see cref="T:OpenMacroBoard.SDK.OmbSize"/> that has Width and Height values set to zero.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.OmbSize"/> struct.
+            </summary>
+            <param name="value">The width and height of the size.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.OmbSize"/> struct.
+            </summary>
+            <param name="width">The width of the size.</param>
+            <param name="height">The height of the size.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.#ctor(OpenMacroBoard.SDK.OmbSize)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.OmbSize"/> struct.
+            </summary>
+            <param name="size">The size.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.#ctor(OpenMacroBoard.SDK.OmbPoint)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.OmbSize"/> struct from the given <see cref="T:OpenMacroBoard.SDK.OmbPoint"/>.
+            </summary>
+            <param name="point">The point.</param>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbSize.Width">
+            <summary>
+            Gets or sets the width of this <see cref="T:OpenMacroBoard.SDK.OmbSize"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbSize.Height">
+            <summary>
+            Gets or sets the height of this <see cref="T:OpenMacroBoard.SDK.OmbSize"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.OmbSize.IsEmpty">
+            <summary>
+            Gets a value indicating whether this <see cref="T:OpenMacroBoard.SDK.OmbSize"/> is empty.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.op_Explicit(OpenMacroBoard.SDK.OmbSize)~OpenMacroBoard.SDK.OmbPoint">
+            <summary>
+            Converts the given <see cref="T:OpenMacroBoard.SDK.OmbSize"/> into a <see cref="T:OpenMacroBoard.SDK.OmbPoint"/>.
+            </summary>
+            <param name="size">The size.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.op_Equality(OpenMacroBoard.SDK.OmbSize,OpenMacroBoard.SDK.OmbSize)">
+            <summary>
+            Compares two <see cref="T:OpenMacroBoard.SDK.OmbSize"/> objects for equality.
+            </summary>
+            <param name="left">
+            The <see cref="T:OpenMacroBoard.SDK.OmbSize"/> on the left side of the operand.
+            </param>
+            <param name="right">
+            The <see cref="T:OpenMacroBoard.SDK.OmbSize"/> on the right side of the operand.
+            </param>
+            <returns>
+            True if the current left is equal to the <paramref name="right"/> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.op_Inequality(OpenMacroBoard.SDK.OmbSize,OpenMacroBoard.SDK.OmbSize)">
+            <summary>
+            Compares two <see cref="T:OpenMacroBoard.SDK.OmbSize"/> objects for inequality.
+            </summary>
+            <param name="left">
+            The <see cref="T:OpenMacroBoard.SDK.OmbSize"/> on the left side of the operand.
+            </param>
+            <param name="right">
+            The <see cref="T:OpenMacroBoard.SDK.OmbSize"/> on the right side of the operand.
+            </param>
+            <returns>
+            True if the current left is unequal to the <paramref name="right"/> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.Deconstruct(System.Int32@,System.Int32@)">
+            <summary>
+            Deconstructs this size into two integers.
+            </summary>
+            <param name="width">The out value for the width.</param>
+            <param name="height">The out value for the height.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.OmbSize.Equals(OpenMacroBoard.SDK.OmbSize)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.GridKeyLayout">
+            <summary>
+            Represents a grid-like keyboard layout for macro boards.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.GridKeyLayout.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.GridKeyLayout"/> class.
+            </summary>
+            <param name="countX">Number of keys in the x-coordinate (horizontal)</param>
+            <param name="countY">Number of keys in the y-coordinate (vertical)</param>
+            <param name="keySize">Square key size (pixels)</param>
+            <param name="gapSize">Distance between keys (pixels)</param>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.GridKeyLayout.Count">
+            <summary>
+            Gets the number of keys on this layout.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.GridKeyLayout.KeySize">
+            <inheritdoc />
+        </member>
+        <member name="P:OpenMacroBoard.SDK.GridKeyLayout.GapSize">
+            <inheritdoc />
+        </member>
+        <member name="P:OpenMacroBoard.SDK.GridKeyLayout.Area">
+            <inheritdoc />
+        </member>
+        <member name="P:OpenMacroBoard.SDK.GridKeyLayout.CountX">
+            <inheritdoc />
+        </member>
+        <member name="P:OpenMacroBoard.SDK.GridKeyLayout.CountY">
+            <inheritdoc />
+        </member>
+        <member name="P:OpenMacroBoard.SDK.GridKeyLayout.Item(System.Int32)">
+            <summary>
+            Gets the dimensions of the key with a given <paramref name="keyIndex"/>.
+            </summary>
+            <param name="keyIndex">The index of the key.</param>
+            <returns>The dimensions of the requested key.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Is thrown if the <paramref name="keyIndex"/> is out of range.</exception>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.GridKeyLayout.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="T:OpenMacroBoard.SDK.IDeviceContext">
+            <summary>
+            Represents a context that tracks devices and their connection state using device listeners.
+            </summary>
+            <remarks>
+            <para>This is basically the entry point to opening a <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/>. Once constructed
+            you can add device listeners for various providers and the context will collect all devices
+            (even from different providers) in one place.</para>
+            </remarks>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IDeviceContext.DeviceStateReports">
+            <summary>
+            Gets the observable that reports all device state changes, for example like
+            new devices or connection state changes.
+            </summary>
+            <remarks>
+            <para>Once subscribed, reports are generated to reflect the current state of known devices and
+            their connection state. This does not mean that all original reports are replayed, but only
+            the most recent events, that are needed to rebuild the currently known state for all known devices.</para>
+            </remarks>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IDeviceContext.KnownDevices">
+            <summary>
+            A list of known devices.
+            </summary>
+            <remarks>
+            <para>The order of the list is consistent and new devices are always added at the end.</para>
+            </remarks>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IDeviceContext.AddListener(System.IObservable{OpenMacroBoard.SDK.DeviceStateReport})">
+            <summary>
+            Registers a new device listener for that context.
+            </summary>
+            <remarks>
+            <para>Registered listeners can't be unsubscribed individually.
+            All listeners will unsubscribed when the context is disposed.</para>
+            </remarks>
+            <returns>Returns the original instance to allow for fluent API calls.</returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IDeviceContext.AddListener(System.IObservable{OpenMacroBoard.SDK.DeviceStateReport},System.Boolean)">
+            <summary>
+            Registers a new device listener for that context.
+            </summary>
+            <remarks>
+            <para>
+            Registered listeners can't be unsubscribed individually.
+            All listeners will unsubscribed when the context is disposed.
+            </para>
+            <para>
+            When <paramref name="disposeWithContext"/> is set to true and <paramref name="deviceListener"/> is
+            <see cref="T:System.IDisposable"/> it will be disposed when the context is disposed.
+            </para>
+            </remarks>
+            <returns>Returns the original instance to allow for fluent API calls.</returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IDeviceContext.AddListener``1">
+            <summary>
+            Registers a new device listener for that context.
+            </summary>
+            <typeparam name="TListener">A <see cref="T:System.IObservable`1"/> with a parameterless constructor.</typeparam>
+            <remarks>
+            <para>Registered listeners can't be unsubscribed individually.
+            All listeners will unsubscribed when the context is disposed.</para>
+            </remarks>
+            <returns>Returns the original instance to allow for fluent API calls.</returns>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.IDeviceReference">
+            <summary>
+            A handle that can be used to open an <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> instance.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IDeviceReference.DeviceName">
+            <summary>
+            A user friendly display name.
+            </summary>
+            <remarks>
+            <para>The device name is not part of the equality for a device reference handle. This means, that
+            there can be two <see cref="T:OpenMacroBoard.SDK.IDeviceReference"/>s with different names which are still
+            considered to be equal, because they refer to the same device.</para>
+            </remarks>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IDeviceReference.Keys">
+            <summary>
+            Gets the key layout for the referenced device.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IDeviceReference.Open">
+            <summary>
+            Connects to a macro board and returns an <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> instance
+            which can be used to interact with the board.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.IKeyBitmapDataAccess">
+            <summary>
+            An interface that allows you to access the underlying data of <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/>s.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IKeyBitmapDataAccess.Width">
+            <summary>
+            Gets the width of the bitmap.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IKeyBitmapDataAccess.Height">
+            <summary>
+            Gets the height of the bitmap.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IKeyBitmapDataAccess.IsEmpty">
+            <summary>
+            Gets a value indicating whether the underlying byte array is null.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IKeyBitmapDataAccess.GetData">
+            <summary>
+            Gets the underlying image data in unaligned Bgr24 format (stride = width * 3).
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.IKeyBitmapFactory">
+            <summary>
+            Interface for factory extensions
+            </summary>
+            <remarks>
+            <para>This interface is intentionally empty
+            It is used to implement factory extensions
+            <see cref="P:OpenMacroBoard.SDK.KeyBitmap.Create"/></para>
+            </remarks>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.IKeyLayout">
+            <summary>
+            Describes the key layout of an <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/>.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IKeyLayout.KeySize">
+            <summary>
+            Gets the image size of the keys that are supported.
+            </summary>
+            <remarks>
+            <para>
+            In the rare case that the underlying board doesn't have square keys
+            the value will be the size that most keys use, an average or a guess.
+            If you need more accurate sizes you have the enumerate the key rectangles of
+            this collection.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IKeyLayout.Area">
+            <summary>
+            Gets the smallest rectangle area that fits all keys.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IKeyLayout.CountX">
+            <summary>
+            Gets the number of keys in the horizontal direction.
+            </summary>
+            <remarks>
+            <para>In the rare case that the underlying board doesn't have a rectangular key layout
+            this value might be an estimate or even wrong. It's not even guaranteed that
+            <see cref="P:OpenMacroBoard.SDK.IKeyLayout.CountX"/> times <see cref="P:OpenMacroBoard.SDK.IKeyLayout.CountY"/> will be equal to Count
+            but all implementations should make sure that the product is at least
+            not greater than Count  and <see cref="P:OpenMacroBoard.SDK.IKeyLayout.CountX"/> is at least 1.</para>
+            </remarks>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IKeyLayout.CountY">
+            <summary>
+            Gets the number of keys in the vertical direction.
+            </summary>
+            <remarks>
+            <para>In the rare case that the underlying board doesn't have a rectangular key layout
+            this value might be an estimate or even wrong. It's not even guaranteed that
+            <see cref="P:OpenMacroBoard.SDK.IKeyLayout.CountX"/> times <see cref="P:OpenMacroBoard.SDK.IKeyLayout.CountY"/> will be equal to Count
+            but all implementations should make sure that the product is at least
+            not greater than Count and <see cref="P:OpenMacroBoard.SDK.IKeyLayout.CountY"/> is at least 1.</para>
+            </remarks>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IKeyLayout.GapSize">
+            <summary>
+            Gets the gap between the keys.
+            </summary>
+            <remarks>
+            <para>In the rare case that the underlying board doesn't have
+            a rectangular key layout this value might be an estimate, made up or wrong.</para>
+            </remarks>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.IKnownDevice">
+            <summary>
+            A <see cref="T:OpenMacroBoard.SDK.IDeviceReference"/> managed by a <see cref="T:OpenMacroBoard.SDK.IDeviceContext"/>
+            with additional meta data (like the connected state).
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IKnownDevice.Connected">
+            <summary>
+            Gets a value that indicates the current connection state.
+            True if the device is currently connected, false if the device is disconnected.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.IMacroBoard">
+            <summary>
+            An interface that allows you to interact with (LCD) macro boards
+            </summary>
+        </member>
+        <member name="E:OpenMacroBoard.SDK.IMacroBoard.KeyStateChanged">
+            <summary>
+            Is raised when a key is pressed
+            </summary>
+        </member>
+        <member name="E:OpenMacroBoard.SDK.IMacroBoard.ConnectionStateChanged">
+            <summary>
+            Is raised when the MarcoBoard is being disconnected or connected
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IMacroBoard.Keys">
+            <summary>
+            Informations about the keys and their position
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.IMacroBoard.IsConnected">
+            <summary>
+            Gets a value indicating whether the MarcoBoard is connected.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IMacroBoard.SetBrightness(System.Byte)">
+            <summary>
+            Sets the brightness for this <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/>
+            </summary>
+            <param name="percent">Brightness in percent (0 - 100)</param>
+            <remarks>
+            <para>
+            The brightness on the device is controlled with PWM (https://en.wikipedia.org/wiki/Pulse-width_modulation).
+            This results in a non-linear correlation between set percentage and perceived brightness.
+            </para>
+            <para>
+            In a nutshell: changing from 10 - 30 results in a bigger change than 80 - 100 (barely visible change)
+            This effect should be compensated outside this library
+            </para>
+            </remarks>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IMacroBoard.SetKeyBitmap(System.Int32,OpenMacroBoard.SDK.KeyBitmap)">
+            <summary>
+            Sets a background image for a given key
+            </summary>
+            <param name="keyId">Specifies which key the image will be applied on</param>
+            <param name="bitmapData">Bitmap. The key will be painted black if this value is null.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IMacroBoard.ShowLogo">
+            <summary>
+            Shows the standby logo (full-screen)
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IMacroBoard.GetFirmwareVersion">
+            <summary>
+            Gets the firmware version.
+            </summary>
+            <returns>
+            Returns the firmware version
+            or <see cref="F:System.String.Empty"/> if the device doesn't have a firmware.
+            </returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.IMacroBoard.GetSerialNumber">
+            <summary>
+            Gets the serial number.
+            </summary>
+            <returns>
+            Returns the serial number
+            or <see cref="F:System.String.Empty"/> if the device doesn't have a serial number.
+            </returns>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.ImageSharpExtensions">
+            <summary>
+            A collection of extensions for interop with ImageSharp.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ImageSharpExtensions.ToBgr24PixelArray(SixLabors.ImageSharp.Image{SixLabors.ImageSharp.PixelFormats.Bgr24})">
+            <summary>
+            Converts an Bgr24 image to a byte array containing raw pixel data.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ImageSharpExtensions.ToBgr24PixelArray(SixLabors.ImageSharp.Image,System.Span{System.Byte})">
+            <summary>
+            Copies an <see cref="T:SixLabors.ImageSharp.Image"/> as Bgr24 into a given span.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ImageSharpExtensions.ToBgr24PixelArray(SixLabors.ImageSharp.Image)">
+            <summary>
+            Converts an <see cref="T:SixLabors.ImageSharp.Image"/> to a byte array containing raw pixel data.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ImageSharpExtensions.CloneAlphaBlendedBgr24(SixLabors.ImageSharp.Image,OpenMacroBoard.SDK.OmbColor)">
+            <summary>
+            Clones a given image into a <see cref="T:SixLabors.ImageSharp.Image`1"/>
+            with correct alpha blending and a given background color.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ImageSharpExtensions.CloneAlphaBlendedBgr24(SixLabors.ImageSharp.Image)">
+            <summary>
+            Clones a given image into a <see cref="T:SixLabors.ImageSharp.Image`1"/>
+            with correct alpha blending and black background.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.ImageSharpExtensions.WithBgr24(SixLabors.ImageSharp.Image)">
+            <summary>
+            Creates a context with an <see cref="T:SixLabors.ImageSharp.Image`1"/>.
+            </summary>
+            <remarks>
+            <para>
+            If the image already is an <see cref="T:SixLabors.ImageSharp.Image`1"/> this image will be wrapped inside the
+            <see cref="T:OpenMacroBoard.SDK.ConditionalDisposable`1"/>. If the image is a different pixel format it will be cloned
+            and transformed into an <see cref="T:SixLabors.ImageSharp.Image`1"/>.
+            </para>
+            <para>
+            Calling <see cref="M:System.IDisposable.Dispose"/> on the returned value will never dispose the original
+            <paramref name="image"/> but only the implicitly cloned value if any.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.Internals.ConstrainedContext.For``2(``0,System.Func{``0,``1},System.Func{``0,``1})">
+            <summary>
+            Creates a context which might depend on the provided item or a clone of that item.
+            </summary>
+            <remarks>
+            <para>This is useful in situation where you only want to do an expensive operation
+            for <see cref="T:System.IDisposable"/> types when needed. The <see cref="T:OpenMacroBoard.SDK.ConditionalDisposable`1"/>
+            makes sure that elements that depend on the parent (borrow, no copy) will not be disposed
+            but cloned (owned copies) will be disposed.</para>
+            </remarks>
+            <typeparam name="TInput">Input type.</typeparam>
+            <typeparam name="TOutput">Output type.</typeparam>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.Internals.DeviceStateObserver">
+            <summary>
+            Create an observer from an action.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.KeyBitmap">
+            <summary>
+            Represents a bitmap that can be used as key images
+            </summary>
+        </member>
+        <member name="F:OpenMacroBoard.SDK.KeyBitmap.rawBitmapData">
+            <summary>
+            Byte order is B-G-R, and pixels are stored left-to-right and top-to-bottom
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.KeyBitmap.Create">
+            <summary>
+            This property can be used to create new KeyBitmaps
+            </summary>
+            <remarks>
+            <para>This property just serves as an anchor point for extension methods
+            to create new <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> objects</para>
+            </remarks>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.KeyBitmap.Black">
+            <summary>
+            Solid black bitmap
+            </summary>
+            <remarks>
+            <para>If you need a black bitmap (for example to clear keys) use this property for better performance (in theory ^^)</para>
+            </remarks>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.KeyBitmap.Width">
+            <summary>
+            Gets the width of the bitmap.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.KeyBitmap.Height">
+            <summary>
+            Gets the height of the bitmap.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmap.op_Equality(OpenMacroBoard.SDK.KeyBitmap,OpenMacroBoard.SDK.KeyBitmap)">
+            <summary>
+            The == operator
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmap.op_Inequality(OpenMacroBoard.SDK.KeyBitmap,OpenMacroBoard.SDK.KeyBitmap)">
+            <summary>
+            The != operator
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmap.Equals(OpenMacroBoard.SDK.KeyBitmap,OpenMacroBoard.SDK.KeyBitmap)">
+            <summary>
+            Compares the content of two given <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/>s
+            </summary>
+            <param name="a">KeyBitmap a</param>
+            <param name="b">KeyBitmap b</param>
+            <returns>Returns true of the <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/>s are equal and false otherwise.</returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmap.Equals(OpenMacroBoard.SDK.KeyBitmap)">
+            <summary>
+            Compares the content of this <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> to another KeyBitmap
+            </summary>
+            <param name="other">The other <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/></param>
+            <returns>True if both bitmaps are equals and false otherwise.</returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmap.Equals(System.Object)">
+            <summary>
+            Compares the content of this <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> to another object
+            </summary>
+            <param name="obj">The other object</param>
+            <returns>Return true if the other object is a <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> and equal to this one. Returns false otherwise.</returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmap.GetHashCode">
+            <summary>
+            Get the hash code for this object.
+            </summary>
+            <returns>The hash code</returns>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmap.OpenMacroBoard#SDK#IKeyBitmapDataAccess#GetData">
+            <inheritdoc />
+        </member>
+        <member name="T:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions">
+            <summary>
+            Collection of factory extension methods for <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/>s.
+            </summary>
+            <remarks>
+            <para>You typically don't want to invoke the static methods directly, but instead use them
+            as extension methods by calling <see cref="P:OpenMacroBoard.SDK.KeyBitmap.Create"/>.XYZ();</para>
+            </remarks>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromBgr24Array(OpenMacroBoard.SDK.IKeyBitmapFactory,System.Int32,System.Int32,System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Creates a new <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> object.
+            </summary>
+            <param name="keyFactory">The builder that is used to create the <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/></param>
+            <param name="width">width of the bitmap</param>
+            <param name="height">height of the bitmap</param>
+            <param name="bitmapDataBgr24">raw bitmap data (Bgr24)</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Either <paramref name="width"/> or <paramref name="height"/> are smaller than one.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Provided <paramref name="width"/> and <paramref name="height"/> doesn't match the
+            expected array length of <paramref name="bitmapDataBgr24"/>.
+            </exception>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromBgra32Array(OpenMacroBoard.SDK.IKeyBitmapFactory,System.Int32,System.Int32,System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Creates a new <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> object.
+            </summary>
+            <param name="keyFactory">The builder that is used to create the <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/></param>
+            <param name="width">width of the bitmap</param>
+            <param name="height">height of the bitmap</param>
+            <param name="bitmapDataBgra32">raw bitmap data (Bgra32). The alpha channel will be ignored.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Either <paramref name="width"/> or <paramref name="height"/> are smaller than one.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Provided <paramref name="width"/> and <paramref name="height"/> doesn't match the
+            expected array length of <paramref name="bitmapDataBgra32"/>.
+            </exception>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromRgba32Array(OpenMacroBoard.SDK.IKeyBitmapFactory,System.Int32,System.Int32,System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Creates a new <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> object.
+            </summary>
+            <param name="keyFactory">The builder that is used to create the <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/></param>
+            <param name="width">width of the bitmap</param>
+            <param name="height">height of the bitmap</param>
+            <param name="bitmapDataRgba32">raw bitmap data (Bgra32). The alpha channel will be ignored.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Either <paramref name="width"/> or <paramref name="height"/> are smaller than one.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Provided <paramref name="width"/> and <paramref name="height"/> doesn't match the
+            expected array length of <paramref name="bitmapDataRgba32"/>.
+            </exception>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.Empty(OpenMacroBoard.SDK.IKeyBitmapFactory,System.Int32,System.Int32)">
+            <summary>
+            Creates a new <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> object.
+            </summary>
+            <param name="keyFactory">The builder that is used to create the <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/></param>
+            <param name="width">width of the bitmap</param>
+            <param name="height">height of the bitmap</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Either <paramref name="width"/> or <paramref name="height"/> are smaller than one.
+            </exception>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromRgb(OpenMacroBoard.SDK.IKeyBitmapFactory,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Creates a single color (single pixel) <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> with a given color.
+            </summary>
+            <param name="keyFactory">The builder that is used to create the <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/></param>
+            <param name="r">Red channel.</param>
+            <param name="g">Green channel.</param>
+            <param name="b">Blue channel.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromColor(OpenMacroBoard.SDK.IKeyBitmapFactory,OpenMacroBoard.SDK.OmbColor)">
+            <summary>
+            Creates a single color (single pixel) <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> with a given color.
+            </summary>
+            <param name="keyFactory">The builder that is used to create the <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/></param>
+            <param name="color">The color.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromStream(OpenMacroBoard.SDK.IKeyBitmapFactory,System.IO.Stream)">
+            <summary>
+            Create a bitmap from an encoded given image stream.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromStreamAsync(OpenMacroBoard.SDK.IKeyBitmapFactory,System.IO.Stream)">
+            <summary>
+            Create a bitmap from an encoded given image stream.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromFile(OpenMacroBoard.SDK.IKeyBitmapFactory,System.String)">
+            <summary>
+            Create a bitmap from an encoded given image file.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromFileAsync(OpenMacroBoard.SDK.IKeyBitmapFactory,System.String)">
+            <summary>
+            Create a bitmap from an encoded given image file.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapBasicFactoryExtensions.FromImageSharpImage(OpenMacroBoard.SDK.IKeyBitmapFactory,SixLabors.ImageSharp.Image)">
+            <summary>
+            Creates a <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> from a given <see cref="T:SixLabors.ImageSharp.Image`1"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The provided bitmap is null.</exception>
+            <exception cref="T:System.NotSupportedException">The pixel format of the image is not supported.</exception>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.KeyBitmapDataAccessExtensions">
+            <summary>
+            Extension methods for <see cref="T:OpenMacroBoard.SDK.IKeyBitmapDataAccess"/>.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyBitmapDataAccessExtensions.ToImage(OpenMacroBoard.SDK.IKeyBitmapDataAccess)">
+            <summary>
+            Creates a new <see cref="T:SixLabors.ImageSharp.Image`1"/> for this <see cref="T:OpenMacroBoard.SDK.IKeyBitmapDataAccess"/>.
+            </summary>
+            <remarks>
+            <para>
+            Keep in mind that this operation allocates and creates a copy under the hood.
+            </para>
+            </remarks>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.KeyEventArgs">
+            <summary>
+            An event argument that is used to communicate key state changes.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.KeyEventArgs.#ctor(System.Int32,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.KeyEventArgs"/> class.
+            </summary>
+            <param name="key">The index of the key that was pressed or released.</param>
+            <param name="isDown">A flag that determines if the key was pressed or released.</param>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.KeyEventArgs.Key">
+            <summary>
+            The index of the key that was pressed or released.
+            </summary>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.KeyEventArgs.IsDown">
+            <summary>
+            A flag that determines if the key was pressed or released.
+            </summary>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.Helper.KeyLayoutAreaHelperExtensions">
+            <summary>
+            Extensions from <see cref="T:OpenMacroBoard.SDK.IKeyLayout"/>s.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.Helper.KeyLayoutAreaHelperExtensions.GetFullArea(OpenMacroBoard.SDK.IKeyLayout)">
+            <summary>
+            Calculates a <see cref="T:OpenMacroBoard.SDK.OmbRectangle"/> which spans all keys from a given <see cref="T:OpenMacroBoard.SDK.IKeyLayout"/>.
+            </summary>
+            <param name="keyLayout">The key layout this area is calculated for.</param>
+            <returns>Returns a rectangle that spans all keys.</returns>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.MacroBoardAdapter">
+            <summary>
+            Wraps an <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> and allows for hooks to implement "middle-ware" features.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.#ctor(OpenMacroBoard.SDK.IMacroBoard)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.MacroBoardAdapter"/> class.
+            </summary>
+            <remarks>
+            <para>When this instance is disposed, the underlying board is disposed as well.</para>
+            </remarks>
+            <param name="macroBoard">The macroBoard that is wrapped.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.#ctor(OpenMacroBoard.SDK.IMacroBoard,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenMacroBoard.SDK.MacroBoardAdapter"/> class.
+            </summary>
+            <param name="macroBoard">The macroBoard that is wrapped.</param>
+            <param name="leaveOpen">When true, the underlying macroBoard will not be disposed with this instance.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.Finalize">
+            <summary>
+            Finalizes an instance of the <see cref="T:OpenMacroBoard.SDK.MacroBoardAdapter"/> class.
+            </summary>
+        </member>
+        <member name="E:OpenMacroBoard.SDK.MacroBoardAdapter.KeyStateChanged">
+            <inheritdoc/>
+        </member>
+        <member name="E:OpenMacroBoard.SDK.MacroBoardAdapter.ConnectionStateChanged">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.MacroBoardAdapter.Keys">
+            <inheritdoc/>
+        </member>
+        <member name="P:OpenMacroBoard.SDK.MacroBoardAdapter.IsConnected">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.SetBrightness(System.Byte)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.SetKeyBitmap(System.Int32,OpenMacroBoard.SDK.KeyBitmap)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.ShowLogo">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.GetFirmwareVersion">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.GetSerialNumber">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.OnKeyStateChanged(System.Object,OpenMacroBoard.SDK.KeyEventArgs)">
+            <summary>
+            Virtual KeyStateChanged event handler.
+            </summary>
+            <param name="sender">The sender of the original event.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.OnConnectionStateChanged(System.Object,OpenMacroBoard.SDK.ConnectionEventArgs)">
+            <summary>
+            Virtual ConnectionStateChanged event handler.
+            </summary>
+            <param name="sender">The sender of the original event.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardAdapter.Dispose(System.Boolean)">
+            <summary>
+            Protected implementation of Dispose pattern.
+            </summary>
+            <param name="disposing">True when called from <see cref="M:OpenMacroBoard.SDK.MacroBoardAdapter.Dispose"/> and false when called from the finalizer.</param>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.MacroBoardFeatureExtensions">
+            <summary>
+            Extensions for <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> enrichment ;-)
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardFeatureExtensions.WithButtonPressEffect(OpenMacroBoard.SDK.IMacroBoard,OpenMacroBoard.SDK.ButtonPressEffectConfig)">
+            <summary>
+            Wraps an <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> with an button press effect adapter.
+            </summary>
+            <param name="macroBoard">The board that should be wrapped.</param>
+            <param name="config">The configuration that should be used. Changes to the configuration later also takes effect.</param>
+            <returns>Returns a new board that implements the button press effect.</returns>
+            <exception cref="T:System.ArgumentNullException">The provided board is null.</exception>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.MacroBoardFeatureExtensions.WithDisconnectReplay(OpenMacroBoard.SDK.IMacroBoard)">
+            <summary>
+            Wraps an <see cref="T:OpenMacroBoard.SDK.IMacroBoard"/> with a disconnect replay adapter.
+            </summary>
+            <param name="macroBoard">The board that should be wrapped.</param>
+            <returns>Returns a new board that implements the replay feature.</returns>
+            <remarks>
+            <para>This adapter makes sure, that if a device is disconnected that previously set properties like
+            images and brightness are replayed if the device is connected again.</para>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">The provided board is null.</exception>
+        </member>
+        <member name="T:OpenMacroBoard.SDK.SetKeyExtensions">
+            <summary>
+            A bunch of extensions to clear all keys, or set a single <see cref="T:OpenMacroBoard.SDK.KeyBitmap"/> to all keys.
+            </summary>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.SetKeyExtensions.SetKeyBitmap(OpenMacroBoard.SDK.IMacroBoard,OpenMacroBoard.SDK.KeyBitmap)">
+            <summary>
+            Sets a background image for all keys
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The provided board is null.</exception>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.SetKeyExtensions.ClearKey(OpenMacroBoard.SDK.IMacroBoard,System.Int32)">
+            <summary>
+            Sets background to black for a given key
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The provided board is null.</exception>
+        </member>
+        <member name="M:OpenMacroBoard.SDK.SetKeyExtensions.ClearKeys(OpenMacroBoard.SDK.IMacroBoard)">
+            <summary>
+            Sets background to black for all given keys
+            </summary>
+        </member>
+    </members>
+</doc>
